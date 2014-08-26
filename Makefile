@@ -32,17 +32,13 @@ EXES1 = $(patsubst %.exe,$(EXEDIR)/%.exe,$(_EXES1))
 
 all: $(EXES1) 
 
+$(SRCDIR)/plotter.o: $(SRCDIR)/%.o: $(SRCDIR)/%.cpp config.hpp
+	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(SRCDIR)/config.o: $(SRCDIR)/%.o: $(SRCDIR)/%.cpp $(INCDIR)/%.hpp
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-$(SRCDIR)/copyTree.o: $(SRCDIR)/%.o: $(SRCDIR)/%.cpp $(INCDIR)/%.hpp calibTreeDef.hpp
-	$(CC) -o $@ -c $< $(CFLAGS)
-
 $(OBJS3):  $(SRCDIR)/%.o: $(SRCDIR)/%.cpp 
-	$(CC) -o $@ -c $< $(CFLAGS)
-
-$(SRCDIR)/drawMee.o: $(SRCDIR)/%.o: $(SRCDIR)/%.cpp $(INCDIR)/%.hpp config.hpp calibRecord.hpp etaring.hpp calibTreeDef.hpp
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 
