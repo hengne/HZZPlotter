@@ -12,18 +12,17 @@
 #include <vector>
 #include <cstdlib>
 
-using namespace std;
 
 config::config(char* filename) {
-  vector <string> rcplist;
-  vector <string> parsestring;
-  ifstream rcpfile(filename);
+  std::vector<std::string> rcplist;
+  std::vector <std::string> parsestring;
+  std::ifstream rcpfile(filename);
   if(rcpfile.fail()) {
-    cout << "Cant open file " << filename << endl;
+    std::cout << "Cant open file " << filename << std::endl;
   }
-  string line;
+  std::string line;
 
-  while(getline(rcpfile,line)) {
+  while(std::getline(rcpfile,line)) {
     rcplist.push_back(line);
   }
   for(unsigned int i=0; i<rcplist.size(); i++) {
@@ -37,12 +36,12 @@ config::config(char* filename) {
   listsize=parselist.size();
 }
 
-config::config(string filename) {
+config::config(std::string filename) {
   config(filename.c_str());
 }
 
-vector <string> config::parser(string line) {
-  vector <string> parsestring;
+std::vector<std::string> config::parser(std::string line) {
+  std::vector<std::string> parsestring;
   int start=0;
   int finish=0;
   //  int len=0;
@@ -73,17 +72,17 @@ vector <string> config::parser(string line) {
   return parsestring;
 }
 
-string config::find(string cond, string type_str) {
-  string var;
+std::string config::find(std::string cond, std::string type_str) {
+  std::string var;
   int rep=0;
   for(int i=0; i<listsize; i++) {
     if(parselist[i].size()!=3) continue;
-    string type=parselist[i][0];
-    string tag=parselist[i][1];
-    string svar=parselist[i][2];
+    std::string type=parselist[i][0];
+    std::string tag=parselist[i][1];
+    std::string svar=parselist[i][2];
     if(tag==cond) {
       if(type!=type_str) 
-	cout << "type mismatch for " << tag << endl;
+	std::cout << "type mismatch for " << tag << std::endl;
       var=svar;
       rep++;
     }
@@ -92,44 +91,44 @@ string config::find(string cond, string type_str) {
   return var;
 }
 
-double config::getFloat(string cond) {
+double config::getFloat(std::string cond) {
   return atof(find(cond,"float").c_str());
 }
 
-double config::getDouble(string cond) {
+double config::getDouble(std::string cond) {
   return atof(find(cond,"double").c_str());
 }
 
-int config::getInt(string cond) {
+int config::getInt(std::string cond) {
   return atoi(find(cond,"int").c_str());
 }
 
-bool config::getBool(string cond) {
-  string svar;
+bool config::getBool(std::string cond) {
+  std::string svar;
   bool var=false;
   svar=find(cond,"bool");
   if(svar=="true") var=true;
   else if(svar=="false") var=false;
-  else cout << "boolean not set to true or false for " << cond << endl;
+  else std::cout << "boolean not set to true or false for " << cond << std::endl;
   return var;
 }
 
-string config::getString(string cond) {
-  string astring = find(cond,"string");
-  while(astring.find('"')!=string::npos) {
+std::string config::getString(std::string cond) {
+  std::string astring = find(cond,"string");
+  while(astring.find('"')!=std::string::npos) {
     astring.replace(astring.find('"'), 1, 1, ' ');
   }
   return astring;
 }
 
-vector <int> config::getIntArray(string cond) {
-  vector <int> array;
+std::vector <int> config::getIntArray(std::string cond) {
+  std::vector <int> array;
   int rep=0;
   for(int i=0; i<listsize; i++) {
-    string type=parselist[i][0];
-    string tag=parselist[i][1];
+    std::string type=parselist[i][0];
+    std::string tag=parselist[i][1];
     if(tag==cond) {
-      if(type!="int_array") cout << "type mismatch for " << tag << endl;
+      if(type!="int_array") std::cout << "type mismatch for " << tag << std::endl;
       rep++;
       if(rep>1) break;
       for(unsigned int j=2; j<parselist[i].size(); j++) {
@@ -141,14 +140,14 @@ vector <int> config::getIntArray(string cond) {
   return array;  
 }
 
-vector <float> config::getFloatArray(string cond) {
-  vector <float> array;
+std::vector <float> config::getFloatArray(std::string cond) {
+  std::vector <float> array;
   int rep=0;
   for(int i=0; i<listsize; i++) {
-    string type=parselist[i][0];
-    string tag=parselist[i][1];
+    std::string type=parselist[i][0];
+    std::string tag=parselist[i][1];
     if(tag==cond) {
-      if(type!="float_array") cout << "type mismatch for " << tag << endl;
+      if(type!="float_array") std::cout << "type mismatch for " << tag << std::endl;
       rep++;
       if(rep>1) break;
       for(unsigned int j=2; j<parselist[i].size(); j++) {
@@ -160,14 +159,14 @@ vector <float> config::getFloatArray(string cond) {
   return array;  
 }
 
-vector <double> config::getDoubleArray(string cond) {
-  vector <double> array;
+std::vector <double> config::getDoubleArray(std::string cond) {
+  std::vector <double> array;
   int rep=0;
   for(int i=0; i<listsize; i++) {
-    string type=parselist[i][0];
-    string tag=parselist[i][1];
+    std::string type=parselist[i][0];
+    std::string tag=parselist[i][1];
     if(tag==cond) {
-      if(type!="double_array") cout << "type mismatch for " << tag << endl;
+      if(type!="double_array") std::cout << "type mismatch for " << tag << std::endl;
       rep++;
       if(rep>1) break;
       for(unsigned int j=2; j<parselist[i].size(); j++) {
@@ -179,20 +178,20 @@ vector <double> config::getDoubleArray(string cond) {
   return array;  
 }
 
-vector <string> config::getStringArray(string cond) {
-  vector <string> array;
+std::vector <std::string> config::getStringArray(std::string cond) {
+  std::vector <std::string> array;
   int rep=0;
   for(int i=0; i<listsize; i++) {
-    string type=parselist[i][0];
-    string tag=parselist[i][1];
+    std::string type=parselist[i][0];
+    std::string tag=parselist[i][1];
     if(tag==cond) {
-      if(type!="string_array") cout << "type mismatch for " << tag << endl;
+      if(type!="string_array") std::cout << "type mismatch for " << tag << std::endl;
       rep++;
       if(rep>1) break;
       for(unsigned int j=2; j<parselist[i].size(); j++) {
-        string astring = parselist[i].at(j);
+        std::string astring = parselist[i].at(j);
         
-        while(astring.find('"')!=string::npos) {
+        while(astring.find('"')!=std::string::npos) {
           astring.replace(astring.find('"'), 1, 1, ' ');
         }
 
@@ -204,16 +203,16 @@ vector <string> config::getStringArray(string cond) {
   return array;
 }
 
-vector <vector <int> > config::getIntMatrix(string cond) {
-  vector <int> array;
-  vector <vector <int> > matrix;
+std::vector<std::vector <int> > config::getIntMatrix(std::string cond) {
+  std::vector <int> array;
+  std::vector <std::vector <int> > matrix;
   int rep=0;
   int pos=0;
   for(int i=0; i<listsize; i++) {
-    string type=parselist[i][0];
-    string tag=parselist[i][1];
+    std::string type=parselist[i][0];
+    std::string tag=parselist[i][1];
     if(tag==cond) {
-      if(type!="int_matrix") cout << "type mismatch for " << tag << endl;
+      if(type!="int_matrix") std::cout << "type mismatch for " << tag << std::endl;
       if(rep<2) {
 	for(unsigned int j=2; j<parselist[i].size(); j++) {
 	  array.push_back(atoi(parselist[i][j].c_str()));
@@ -226,7 +225,7 @@ vector <vector <int> > config::getIntMatrix(string cond) {
   }
   array.clear();
   for(int i=pos; i<listsize; i++) {
-    string type=parselist[i][0];
+    std::string type=parselist[i][0];
     if(type!="\\") break;
     for(unsigned int j=1; j<parselist[i].size(); j++) {
       array.push_back(atoi(parselist[i][j].c_str()));
@@ -238,9 +237,9 @@ vector <vector <int> > config::getIntMatrix(string cond) {
   return matrix;  
 }
 
-void config::error(int rep, string cond) {
+void config::error(int rep, std::string cond) {
   if(rep>1)
-    cout << "There is more the one occurrence of \"" << cond << "\" in the config file!" << endl;
+    std::cout << "There is more the one occurrence of \"" << cond << "\" in the config file!" << std::endl;
   if(rep==0) 
-    cout << "I could not find " << cond << " in config file." << endl;
+    std::cout << "I could not find " << cond << " in config file." << std::endl;
 }
